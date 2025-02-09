@@ -13,14 +13,14 @@ export interface Square {
 }
 
 export interface Row {
-  row: string;
+  row: number;
   rowSquares: Square[];
 }
 
 export default function TemplateCard({ index, onUpdateAction }: ChildProps) {
   const [squares, setSquares] = useState([
     {
-      row: "B",
+      row: 0,
       rowSquares: [
         { name: "B1", value: false },
         { name: "I1", value: false },
@@ -30,7 +30,7 @@ export default function TemplateCard({ index, onUpdateAction }: ChildProps) {
       ],
     },
     {
-      row: "I",
+      row: 1,
       rowSquares: [
         { name: "B2", value: false },
         { name: "I2", value: false },
@@ -40,7 +40,7 @@ export default function TemplateCard({ index, onUpdateAction }: ChildProps) {
       ],
     },
     {
-      row: "N",
+      row: 2,
       rowSquares: [
         { name: "B3", value: false },
         { name: "I3", value: false },
@@ -50,7 +50,7 @@ export default function TemplateCard({ index, onUpdateAction }: ChildProps) {
       ],
     },
     {
-      row: "G",
+      row: 3,
       rowSquares: [
         { name: "B4", value: false },
         { name: "I4", value: false },
@@ -60,7 +60,7 @@ export default function TemplateCard({ index, onUpdateAction }: ChildProps) {
       ],
     },
     {
-      row: "O",
+      row: 4,
       rowSquares: [
         { name: "B5", value: false },
         { name: "I5", value: false },
