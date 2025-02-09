@@ -23,7 +23,7 @@ const sql = neon(`${process.env.DATABASE_URL}`);
 // }
 
 type PatternData = {
-  patternName: String;
+  patternName: string;
   patternString: number[][][];
 };
 

@@ -22,9 +22,9 @@ export default function TemplateCard({ index, onUpdateAction }: ChildProps) {
   }, [card]);
 
   const toggleCell = (row: number, cell: number) => {
-    let newCard = [];
+    const newCard = [];
     for (let r = 0; r < card.length; r++) {
-      let newRow = [];
+      const newRow = [];
       for (let c = 0; c < card[r].length; c++) {
         if (r === row && c === cell) {
           newRow.push(Number(!card[r][c]));

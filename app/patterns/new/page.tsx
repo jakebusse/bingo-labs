@@ -13,7 +13,7 @@ export default function Page() {
 
   const [patternName, setPatternName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState({});
+  const [message, setMessage] = useState({ success: false, message: "" });
 
   // Function to generate a blank card (reusable)
   function getBlankCard(): number[][] {
@@ -40,7 +40,7 @@ export default function Page() {
     });
   };
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPatternName(event.target.value);
   };
 
@@ -92,6 +92,17 @@ export default function Page() {
         </div>
       )}
       <h1 className="text-purple-500 text-4xl">Create a New Pattern</h1>
+      {message.message ? (
+        <p
+          className={`text-xl ${
+            message.success ? "text-green-600" : "text-red-600"
+          }`}
+        >
+          {message.message}
+        </p>
+      ) : (
+        ""
+      )}
       <label>
         Pattern Name: &nbsp;
         <input
