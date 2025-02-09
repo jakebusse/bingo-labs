@@ -1,15 +1,12 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Varela, Varela_Round } from "next/font/google";
 import "./globals.css";
+import Sidebar from "./sidebar";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const varela_round = Varela_Round({
+  variable: "--font-varela-round",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: "400"
 });
 
 export const metadata: Metadata = {
@@ -25,9 +22,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${varela_round.variable} ${varela_round.variable} antialiased overflow-hidden flex flex-row flex-nowrap w-screen h-screen`}
       >
-        {children}
+        <Sidebar />
+        <div className={`h-full w-5/6 overflow-y-scroll p-6 pl-16`}>
+          {children}
+        </div>
       </body>
     </html>
   );
