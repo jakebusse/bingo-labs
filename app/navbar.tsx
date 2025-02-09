@@ -3,6 +3,7 @@ import { IoMdPerson } from "react-icons/io";
 import { FaCog } from "react-icons/fa";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function Navbar() {
   const { user, error, isLoading } = useUser();
@@ -18,9 +19,9 @@ export default function Navbar() {
         {userMenu ? (
           <div className="">
             {user ? (
-              <a href="/api/auth/logout">Logout</a>
+              <Link href="/api/auth/logout">Logout</Link>
             ) : (
-              <a href="/api/auth/login">Login</a>
+              <Link href="/api/auth/login">Login</Link>
             )}
           </div>
         ) : (
@@ -32,7 +33,7 @@ export default function Navbar() {
           <FaCog /> &nbsp; Admin Menu
           {adminMenu && user ? (
             <div className="">
-              <a href="/patterns/admin">Patterns</a>
+              <Link href="/patterns/admin">Patterns</Link>
             </div>
           ) : (
             ""

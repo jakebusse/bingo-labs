@@ -3,7 +3,6 @@ import { useState } from "react";
 import TemplateCard from "../templateCard";
 import { IoMdAddCircle, IoMdSave, IoMdClose } from "react-icons/io";
 import { createPattern } from "@/app/server/dbActions";
-import Image from "next/image";
 import Loading from "@/app/loading";
 
 export default function Page() {

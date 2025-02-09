@@ -8,7 +8,7 @@ import {
 import { withPageAuthRequired } from "@auth0/nextjs-auth0/client";
 import Loading from "@/app/loading";
 
-export default withPageAuthRequired(function PatternsAdmin({ user }) {
+export default withPageAuthRequired(function PatternsAdmin() {
   const [unapprovedPatterns, setUnapprovedPatterns] = useState<
     { id: number; name: string; created: string }[]
   >([]);
