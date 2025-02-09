@@ -4,8 +4,23 @@ import { useState, useEffect } from "react";
 
 type ChildProps = {
   index: number;
-  onUpdateAction: (arg0: number, arg1: object[]) => void;
+  onUpdateAction: (arg0: number, arg1: Row[]) => void;
 };
+
+export interface Square {
+  name: string;
+  value: boolean;
+}
+
+export interface Row {
+  row: string;
+  rowSquares: Square[];
+}
+
+interface TemplateCardProps {
+  index: number;
+  onUpdate: (index: number, newSquares: Row[]) => void;
+}
 
 export default function TemplateCard({ index, onUpdateAction }: ChildProps) {
   const [squares, setSquares] = useState([

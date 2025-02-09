@@ -1,14 +1,15 @@
 "use client";
-import TemplateCard from "./templateCard";
+import TemplateCard, { Row } from "./templateCard";
 import { useState } from "react";
 
 export default function NewPattern() {
-  const [cardsData, setCardsData] = useState([]);
+  // ✅ Explicitly type the state
+  const [cardsData, setCardsData] = useState<Row[][]>([]);
 
   // Function to update state for each card
-  const handleUpdate = (index: number, newSquares: object) => {
+  const handleUpdate = (index: number, newSquares: Row[]) => {
     setCardsData((prevData) => {
-      const updatedData = [...prevData];
+      const updatedData: Row[][] = [...prevData]; // ✅ Ensure type safety
       updatedData[index] = newSquares;
       return updatedData;
     });
