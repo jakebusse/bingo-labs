@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Varela, Varela_Round } from "next/font/google";
+import { Varela_Round } from "next/font/google";
 import "./globals.css";
 import Sidebar from "./sidebar";
 
 const varela_round = Varela_Round({
   variable: "--font-varela-round",
   subsets: ["latin"],
-  weight: "400"
+  weight: "400",
 });
 
 export const metadata: Metadata = {

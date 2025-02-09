@@ -1,8 +1,8 @@
 // File: server/actions.ts
-"use server";
-import { neon } from "@neondatabase/serverless";
+// "use server";
+// import { neon } from "@neondatabase/serverless";
 
-const sql = neon(`${process.env.DATABASE_URL}`);
+// const sql = neon(`${process.env.DATABASE_URL}`);
 
 // export async function createComment(formData: FormData) {
 //   const comment = formData.get("comment") as string;

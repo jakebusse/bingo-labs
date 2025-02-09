@@ -20,7 +20,7 @@ export default function Sidebar() {
     } else {
       setOpen(false);
     }
-  }, []);
+  }, [md]);
 
   const navItems = [
     {
