@@ -4,77 +4,38 @@ import { useState, useEffect } from "react";
 
 type ChildProps = {
   index: number;
-  onUpdateAction: (arg0: number, arg1: Row[]) => void;
+  onUpdateAction: (arg0: number, arg1: number[][]) => void;
 };
 
-export interface Square {
-  name: string;
-  value: boolean;
-}
-
-export interface Row {
-  row: number;
-  rowSquares: Square[];
-}
-
 export default function TemplateCard({ index, onUpdateAction }: ChildProps) {
-  const [squares, setSquares] = useState([
-    {
-      row: 0,
-      rowSquares: [
-        { name: "B1", value: false },
-        { name: "I1", value: false },
-        { name: "N1", value: false },
-        { name: "G1", value: false },
-        { name: "O1", value: false },
-      ],
-    },
-    {
-      row: 1,
-      rowSquares: [
-        { name: "B2", value: false },
-        { name: "I2", value: false },
-        { name: "N2", value: false },
-        { name: "G2", value: false },
-        { name: "O2", value: false },
-      ],
-    },
-    {
-      row: 2,
-      rowSquares: [
-        { name: "B3", value: false },
-        { name: "I3", value: false },
-        { name: "N3", value: false },
-        { name: "G3", value: false },
-        { name: "O3", value: false },
-      ],
-    },
-    {
-      row: 3,
-      rowSquares: [
-        { name: "B4", value: false },
-        { name: "I4", value: false },
-        { name: "N4", value: false },
-        { name: "G4", value: false },
-        { name: "O4", value: false },
-      ],
-    },
-    {
-      row: 4,
-      rowSquares: [
-        { name: "B5", value: false },
-        { name: "I5", value: false },
-        { name: "N5", value: false },
-        { name: "G5", value: false },
-        { name: "O5", value: false },
-      ],
-    },
+  const [card, setCard] = useState([
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 1, 0, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0],
   ]);
 
   // Notify parent whenever state changes
   useEffect(() => {
-    onUpdateAction(index, squares);
-  }, [squares]);
+    onUpdateAction(index, card);
+  }, [card]);
+
+  const toggleCell = (row: number, cell: number) => {
+    let newCard = [];
+    for (let r = 0; r < card.length; r++) {
+      let newRow = [];
+      for (let c = 0; c < card[r].length; c++) {
+        if (r === row && c === cell) {
+          newRow.push(Number(!card[r][c]));
+        } else {
+          newRow.push(card[r][c]);
+        }
+      }
+      newCard.push(newRow);
+    }
+    setCard(newCard);
+  };
 
   return (
     <div>
@@ -89,33 +50,23 @@ export default function TemplateCard({ index, onUpdateAction }: ChildProps) {
           </tr>
         </thead>
         <tbody>
-          {squares.map((row, rowIndex) => (
-            <tr key={row.row}>
-              {row.rowSquares.map((square, squareIndex) => (
+          {card.map((row, rowIndex) => (
+            <tr key={"R" + rowIndex}>
+              {row.map((cell, cellIndex) => (
                 <td
-                  className={`text-white cursor-pointer ${
-                    square.value ? "text-white bg-green-700" : ""
-                  } ${square.name === "N3" ? "text-black" : ""}`}
-                  key={square.name}
-                  onClick={() => {
-                    setSquares((prevSquares) => {
-                      const newSquares = prevSquares.map((r, rIdx) =>
-                        rIdx === rowIndex
-                          ? {
-                              ...r,
-                              rowSquares: r.rowSquares.map((s, sIdx) =>
-                                sIdx === squareIndex
-                                  ? { ...s, value: !s.value }
-                                  : s
-                              ),
-                            }
-                          : r
-                      );
-                      return newSquares;
-                    });
-                  }}
+                  key={"R" + rowIndex + "-C" + cellIndex}
+                  className={`cursor-pointer ${
+                    rowIndex === 2 && cellIndex === 2 && cell === 1
+                      ? "bg-green-800 text-white"
+                      : rowIndex === 2 && cellIndex === 2
+                      ? "text-black"
+                      : cell === 1
+                      ? "text-white bg-green-800"
+                      : "text-white bg-white"
+                  }`}
+                  onClick={() => toggleCell(rowIndex, cellIndex)}
                 >
-                  {square.name === "N3" ? <FaStar /> : <FaCheck />}
+                  {rowIndex === 2 && cellIndex === 2 ? <FaStar /> : <FaCheck />}
                 </td>
               ))}
             </tr>
