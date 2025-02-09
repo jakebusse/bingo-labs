@@ -17,11 +17,6 @@ export interface Row {
   rowSquares: Square[];
 }
 
-interface TemplateCardProps {
-  index: number;
-  onUpdate: (index: number, newSquares: Row[]) => void;
-}
-
 export default function TemplateCard({ index, onUpdateAction }: ChildProps) {
   const [squares, setSquares] = useState([
     {
