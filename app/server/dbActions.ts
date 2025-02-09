@@ -46,3 +46,41 @@ export async function createPattern(patternData: PatternData) {
     return { success: false, message: "Failed to create pattern: " + error };
   }
 }
+
+export async function getUnapprovedPatterns(): Promise<{
+  success: boolean;
+  result: { id: number; name: string; created: string }[] | string;
+}> {
+  try {
+    const result = await sql(
+      "SELECT id, name, TO_CHAR(created, 'YYYY-MM-DD') AS created FROM patterns WHERE approved = false"
+    );
+
+    return {
+      success: true,
+      result: result as { id: number; name: string; created: string }[],
+    };
+  } catch (error) {
+    console.error("Database Error:", error);
+    return { success: false, result: "Error fetching patterns" };
+  }
+}
+
+export async function getApprovedPatterns(): Promise<{
+  success: boolean;
+  result: { id: number; name: string; created: string }[] | string;
+}> {
+  try {
+    const result = await sql(
+      "SELECT id, name, TO_CHAR(created, 'YYYY-MM-DD') AS created FROM patterns WHERE approved = true"
+    );
+
+    return {
+      success: true,
+      result: result as { id: number; name: string; created: string }[],
+    };
+  } catch (error) {
+    console.error("Database Error:", error);
+    return { success: false, result: "Error fetching patterns" };
+  }
+}

@@ -42,7 +42,7 @@ export default function Sidebar() {
 
   return (
     <nav
-      className={`relative h-full transition-all duration-500 ${
+      className={`relative h-full transition-all duration-500 z-50 bg-white ${
         open ? "w-1/6 shadow-lg" : "w-0"
       }`}
     >

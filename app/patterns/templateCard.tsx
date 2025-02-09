@@ -57,7 +57,7 @@ export default function TemplateCard({ index, onUpdateAction }: ChildProps) {
                   key={"R" + rowIndex + "-C" + cellIndex}
                   className={`cursor-pointer ${
                     rowIndex === 2 && cellIndex === 2 && cell === 1
-                      ? "bg-green-800 text-white"
+                      ? "bg-green-800 text-white pointer-events-none"
                       : rowIndex === 2 && cellIndex === 2
                       ? "text-black"
                       : cell === 1

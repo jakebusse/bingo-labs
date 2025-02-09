@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@auth0/nextjs-auth0": "^3.6.0",
     "@neondatabase/serverless": "^0.10.4",
     "next": "15.1.6",
     "react": "^19.0.0",

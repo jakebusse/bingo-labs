@@ -1,9 +1,10 @@
 "use client";
 import { useState } from "react";
-import TemplateCard from "./templateCard";
+import TemplateCard from "../templateCard";
 import { IoMdAddCircle, IoMdSave, IoMdClose } from "react-icons/io";
 import { createPattern } from "@/app/server/dbActions";
 import Image from "next/image";
+import Loading from "@/app/loading";
 
 export default function Page() {
   // ✅ State to hold multiple TemplateCard data
@@ -78,19 +79,7 @@ export default function Page() {
 
   return (
     <div>
-      {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-75 transition-all duration-500 z-50">
-          <div className="">
-            <Image
-              src="/bingo.gif"
-              width={500}
-              height={250}
-              alt={"Jumping Bingo Cartoon"}
-              className="text-lg font-semibold"
-            />
-          </div>
-        </div>
-      )}
+      {loading && <Loading />}
       <h1 className="text-purple-500 text-4xl">Create a New Pattern</h1>
       {message.message ? (
         <p
