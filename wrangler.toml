@@ -1,0 +1,3 @@
+name = "bingo-labs"
+main = "./index.ts"  # Adjust based on your actual entry file
+compatibility_date = "2025-02-09"  # Change this to today's date
