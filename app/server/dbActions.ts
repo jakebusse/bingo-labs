@@ -1,86 +1,126 @@
 "use server";
-import { neon } from "@neondatabase/serverless";
 
-const sql = neon(`${process.env.DATABASE_URL}`);
+import { Pool, QueryResult, QueryResultRow } from "pg";
 
-// export async function createComment(formData: FormData) {
-//   const comment = formData.get("comment") as string;
+// Initialize PostgreSQL connection pool
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl:
+    process.env.NODE_ENV === "production"
+      ? { rejectUnauthorized: false }
+      : undefined,
+});
 
-//   // Input validation: Ensure comment is not empty or too long
-//   if (!comment || comment.trim().length === 0) {
-//     throw new Error("Comment cannot be empty.");
-//   }
-//   if (comment.length > 500) {
-//     throw new Error("Comment is too long (max 500 characters).");
-//   }
+// Utility function for executing queries
+async function query<T extends QueryResultRow = QueryResultRow>(
+  text: string,
+  params?: (string | number | boolean | null)[]
+): Promise<T[]> {
+  const client = await pool.connect();
+  try {
+    const result: QueryResult<T> = await client.query(text, params);
+    return result.rows;
+  } catch (err) {
+    console.error("Database query failed:", err);
+    throw new Error("Database query failed.");
+  } finally {
+    client.release();
+  }
+}
 
-//   try {
-//     await sql("INSERT INTO comments (comment) VALUES ($1)", [comment]);
-//   } catch (error) {
-//     console.error("Database Error:", error);
-//     throw new Error("Failed to insert comment.");
-//   }
-// }
-
+// Type definition for patterns
 type PatternData = {
   patternName: string;
   patternString: number[][][];
 };
 
+// Function to create a new comment
+export async function createComment(formData: FormData) {
+  const comment = formData.get("comment") as string;
+
+  // Validate input
+  if (!comment || comment.trim().length === 0) {
+    return { success: false, message: "Comment cannot be empty." };
+  }
+  if (comment.length > 500) {
+    return {
+      success: false,
+      message: "Comment is too long (max 500 characters).",
+    };
+  }
+
+  try {
+    await query("INSERT INTO comments (comment) VALUES ($1)", [comment]);
+    return { success: true, message: "Comment added successfully!" };
+  } catch (err) {
+    console.error("Failed to insert comment:", err);
+    return { success: false, message: "Failed to insert comment." };
+  }
+}
+
+// Function to create a new pattern
 export async function createPattern(patternData: PatternData) {
   if (
     patternData.patternName.length < 1 ||
     patternData.patternName.length > 50
   ) {
-    throw new Error("Pattern name must be between 1-50 characters");
+    return {
+      success: false,
+      message: "Pattern name must be between 1-50 characters.",
+    };
   }
 
   try {
-    await sql(
+    await query(
       "INSERT INTO patterns (name, string, approved) VALUES ($1, $2, $3)",
-      [patternData.patternName, patternData.patternString, false]
+      [
+        patternData.patternName,
+        JSON.stringify(patternData.patternString),
+        false,
+      ]
     );
     return { success: true, message: "Pattern saved successfully!" };
-  } catch (error) {
-    console.error("Database Error:", error);
-    return { success: false, message: "Failed to create pattern: " + error };
+  } catch (err) {
+    console.error("Failed to create pattern:", err);
+    return { success: false, message: "Failed to create pattern." };
   }
 }
 
+// Type for pattern retrieval
+type Pattern = {
+  id: number;
+  name: string;
+  created: string;
+};
+
+// Function to get unapproved patterns
 export async function getUnapprovedPatterns(): Promise<{
   success: boolean;
-  result: { id: number; name: string; created: string }[] | string;
+  result: Pattern[] | string;
 }> {
   try {
-    const result = await sql(
+    const result = await query<Pattern>(
       "SELECT id, name, TO_CHAR(created, 'YYYY-MM-DD') AS created FROM patterns WHERE approved = false"
     );
-
-    return {
-      success: true,
-      result: result as { id: number; name: string; created: string }[],
-    };
-  } catch (error) {
-    console.error("Database Error:", error);
-    return { success: false, result: "Error fetching patterns" };
+    return { success: true, result };
+  } catch (err) {
+    console.error("Error fetching unapproved patterns:", err);
+    return { success: false, result: "Error fetching unapproved patterns." };
   }
 }
 
+// Function to get approved patterns
 export async function getApprovedPatterns(): Promise<{
   success: boolean;
-  result: { id: number; name: string; created: string }[] | string;
+  result: Pattern[] | string;
 }> {
   try {
-    const result = await sql(
+    const result = await query<Pattern>(
       "SELECT id, name, TO_CHAR(created, 'YYYY-MM-DD') AS created FROM patterns WHERE approved = true"
     );
-
-    return {
-      success: true,
-      result: result as { id: number; name: string; created: string }[],
-    };
-  } catch (error) {
-    console.error("Database Error:", error);
-    return { success: false, result: "Error fetching patterns" };
+    return { success: true, result };
+  } catch (err) {
+    console.error("Error fetching approved patterns:", err);
+    return { success: false, result: "Error fetching approved patterns." };
   }
 }
