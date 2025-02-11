@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { FaChevronRight } from "react-icons/fa";
 import { useMediaQuery } from "react-responsive";
 import { RiDashboard3Line } from "react-icons/ri";
-import { IoAdd, IoPlay } from "react-icons/io5";
+import { IoAdd, IoPlay, IoGrid } from "react-icons/io5";
 
 export default function Sidebar() {
   const md = useMediaQuery({
@@ -29,14 +29,19 @@ export default function Sidebar() {
       icon: <RiDashboard3Line />,
     },
     {
-      name: "New Pattern",
-      url: "/patterns/new",
-      icon: <IoAdd />,
-    },
-    {
       name: "Run Simulation",
       url: "/simulation",
       icon: <IoPlay />,
+    },
+    {
+      name: "Patterns",
+      url: "/patterns",
+      icon: <IoGrid />,
+    },
+    {
+      name: "New Pattern",
+      url: "/patterns/new",
+      icon: <IoAdd />,
     },
   ];
 

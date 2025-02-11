@@ -106,6 +106,7 @@ export default function Page() {
           <TemplateCard
             key={index}
             index={index}
+            cardData={cardData} // Pass card data from parent
             onUpdateAction={handleUpdate}
           />
         ))}

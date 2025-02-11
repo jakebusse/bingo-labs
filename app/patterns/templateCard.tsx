@@ -4,36 +4,29 @@ import { useState, useEffect } from "react";
 
 type ChildProps = {
   index: number;
+  cardData: number[][]; // Accept card data as a prop
   onUpdateAction: (arg0: number, arg1: number[][]) => void;
 };
 
-export default function TemplateCard({ index, onUpdateAction }: ChildProps) {
-  const [card, setCard] = useState([
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0],
-  ]);
+export default function TemplateCard({
+  index,
+  cardData,
+  onUpdateAction,
+}: ChildProps) {
+  const [card, setCard] = useState(cardData); // Initialize from props
 
-  // Notify parent whenever state changes
   useEffect(() => {
-    onUpdateAction(index, card);
+    setCard(cardData); // Sync with parent updates
+  }, [cardData]); // Reacts to changes from `Page.tsx`
+
+  useEffect(() => {
+    onUpdateAction(index, card); // Notify parent on change
   }, [card]);
 
   const toggleCell = (row: number, cell: number) => {
-    const newCard = [];
-    for (let r = 0; r < card.length; r++) {
-      const newRow = [];
-      for (let c = 0; c < card[r].length; c++) {
-        if (r === row && c === cell) {
-          newRow.push(Number(!card[r][c]));
-        } else {
-          newRow.push(card[r][c]);
-        }
-      }
-      newCard.push(newRow);
-    }
+    const newCard = card.map((r, rIdx) =>
+      r.map((c, cIdx) => (rIdx === row && cIdx === cell ? Number(!c) : c))
+    );
     setCard(newCard);
   };
 
@@ -51,10 +44,10 @@ export default function TemplateCard({ index, onUpdateAction }: ChildProps) {
         </thead>
         <tbody>
           {card.map((row, rowIndex) => (
-            <tr key={"R" + rowIndex}>
+            <tr key={`R${rowIndex}`}>
               {row.map((cell, cellIndex) => (
                 <td
-                  key={"R" + rowIndex + "-C" + cellIndex}
+                  key={`R${rowIndex}-C${cellIndex}`}
                   className={`cursor-pointer ${
                     rowIndex === 2 && cellIndex === 2 && cell === 1
                       ? "bg-green-800 text-white pointer-events-none"

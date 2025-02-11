@@ -87,7 +87,7 @@ export async function createPattern(patternData: PatternData) {
 }
 
 // Type for pattern retrieval
-type Pattern = {
+type ListedPattern = {
   id: number;
   name: string;
   created: string;
@@ -96,10 +96,10 @@ type Pattern = {
 // Function to get unapproved patterns
 export async function getUnapprovedPatterns(): Promise<{
   success: boolean;
-  result: Pattern[] | string;
+  result: ListedPattern[] | string;
 }> {
   try {
-    const result = await query<Pattern>(
+    const result = await query<ListedPattern>(
       "SELECT id, name, TO_CHAR(created, 'YYYY-MM-DD') AS created FROM patterns WHERE approved = false"
     );
     return { success: true, result };
@@ -112,15 +112,43 @@ export async function getUnapprovedPatterns(): Promise<{
 // Function to get approved patterns
 export async function getApprovedPatterns(): Promise<{
   success: boolean;
-  result: Pattern[] | string;
+  result: ListedPattern[] | string;
 }> {
   try {
-    const result = await query<Pattern>(
+    const result = await query<ListedPattern>(
       "SELECT id, name, TO_CHAR(created, 'YYYY-MM-DD') AS created FROM patterns WHERE approved = true"
     );
     return { success: true, result };
   } catch (err) {
     console.error("Error fetching approved patterns:", err);
     return { success: false, result: "Error fetching approved patterns." };
+  }
+}
+
+type FullPattern = {
+  id: number;
+  name: string;
+  string: string;
+  approved: boolean;
+};
+
+export async function getPatternById(id: string): Promise<{
+  success: boolean;
+  result: FullPattern | null;
+}> {
+  try {
+    const result = await query<FullPattern>(
+      "SELECT id, name, string, approved FROM patterns WHERE id = $1",
+      [id]
+    );
+
+    if (result.length === 0) {
+      return { success: false, result: null }; // ✅ Return null if no pattern found
+    }
+
+    return { success: true, result: result[0] }; // ✅ Return a single object
+  } catch (error) {
+    console.error("Error fetching pattern:", error);
+    return { success: false, result: null }; // ✅ Return null in case of an error
   }
 }

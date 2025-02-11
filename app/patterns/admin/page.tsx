@@ -7,6 +7,7 @@ import {
 } from "@/app/server/dbActions";
 import { withPageAuthRequired } from "@auth0/nextjs-auth0/client";
 import Loading from "@/app/loading";
+import Link from "next/link";
 
 export default withPageAuthRequired(function PatternsAdmin() {
   const [unapprovedPatterns, setUnapprovedPatterns] = useState<
@@ -74,7 +75,9 @@ export default withPageAuthRequired(function PatternsAdmin() {
       {loadingApproved || loadingUnapproved ? <Loading /> : ""}
       {/* Unapproved Patterns Table */}
       <div>
-        <h1 className="text-2xl mb-4">Unapproved Patterns</h1>
+        <h1 className="text-3xl font-bold text-purple-600 mb-4">
+          Unapproved Patterns
+        </h1>
 
         {error && <p className="text-red-500">{error}</p>}
 
@@ -94,7 +97,14 @@ export default withPageAuthRequired(function PatternsAdmin() {
                   className="p-4 border-b hover:bg-gray-100 cursor-pointer"
                 >
                   <td className="p-4">{pattern.id}</td>
-                  <td className="p-4">{pattern.name}</td>
+                  <td className="p-4">
+                    <Link
+                      href={`/patterns/${pattern.id}`}
+                      className="text-blue-500 hover:underline"
+                    >
+                      {pattern.name}
+                    </Link>
+                  </td>
                   <td className="p-4">
                     {new Date(pattern.created).toLocaleString()}
                   </td>
@@ -111,7 +121,9 @@ export default withPageAuthRequired(function PatternsAdmin() {
 
       {/* Approved Patterns Table */}
       <div>
-        <h1 className="text-2xl mb-4">Approved Patterns</h1>
+        <h1 className="text-3xl font-bold text-purple-600 mb-4">
+          Approved Patterns
+        </h1>
 
         {error && <p className="text-red-500">{error}</p>}
 
@@ -131,7 +143,14 @@ export default withPageAuthRequired(function PatternsAdmin() {
                   className="p-4 border-b hover:bg-gray-100 cursor-pointer"
                 >
                   <td className="p-4">{pattern.id}</td>
-                  <td className="p-4">{pattern.name}</td>
+                  <td className="p-4">
+                    <Link
+                      href={`/patterns/${pattern.id}`}
+                      className="text-blue-500 hover:underline"
+                    >
+                      {pattern.name}
+                    </Link>
+                  </td>
                   <td className="p-4">
                     {new Date(pattern.created).toLocaleString()}
                   </td>
