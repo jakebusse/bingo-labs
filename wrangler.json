@@ -1,0 +1,37 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bingo-labs",
+  "vars": {
+    "DATABASE_URL": "postgres://bingo-labs-user:npg_YDTxz8VFctI7@ep-misty-boat-a6jecazb-pooler.us-west-2.aws.neon.tech/bingo-labs?sslmode=require",
+    "DATABASE_URL_UNPOOLED": "postgresql://bingo-labs-user:npg_YDTxz8VFctI7@ep-misty-boat-a6jecazb.us-west-2.aws.neon.tech/bingo-labs?sslmode=require",
+    "PGHOST": "ep-misty-boat-a6jecazb-pooler.us-west-2.aws.neon.tech",
+    "PGHOST_UNPOOLED": "ep-misty-boat-a6jecazb.us-west-2.aws.neon.tech",
+    "PGUSER": "bingo-labs-user",
+    "PGDATABASE": "bingo-labs",
+    "PGPASSWORD": "npg_YDTxz8VFctI7",
+    "POSTGRES_URL": "postgres://bingo-labs-user:npg_YDTxz8VFctI7@ep-misty-boat-a6jecazb-pooler.us-west-2.aws.neon.tech/bingo-labs?sslmode=require",
+    "POSTGRES_URL_NON_POOLING": "postgres://bingo-labs-user:npg_YDTxz8VFctI7@ep-misty-boat-a6jecazb.us-west-2.aws.neon.tech/bingo-labs?sslmode=require",
+    "POSTGRES_USER": "bingo-labs-user",
+    "POSTGRES_HOST": "ep-misty-boat-a6jecazb-pooler.us-west-2.aws.neon.tech",
+    "POSTGRES_PASSWORD": "npg_YDTxz8VFctI7",
+    "POSTGRES_DATABASE": "bingo-labs",
+    "POSTGRES_URL_NO_SSL": "postgres://bingo-labs-user:npg_YDTxz8VFctI7@ep-misty-boat-a6jecazb-pooler.us-west-2.aws.neon.tech/bingo-labs",
+    "POSTGRES_PRISMA_URL": "postgres://bingo-labs-user:npg_YDTxz8VFctI7@ep-misty-boat-a6jecazb-pooler.us-west-2.aws.neon.tech/bingo-labs?pgbouncer=true&connect_timeout=15&sslmode=require",
+    "AUTH0_SECRET": "714903354af3bd5254207ca74c3193a8319d7abfd5040f5efce7b26a4dfb1632",
+    "AUTH0_BASE_URL": "http://bingo.jakebusse.net",
+    "AUTH0_ISSUER_BASE_URL": "https://dev-nazqi65pp2a6moal.us.auth0.com",
+    "AUTH0_CLIENT_ID": "5OLRpz1CO5ssCEK3pTOiEfz5tRmFxFiK",
+    "AUTH0_CLIENT_SECRET": "fwtr8oUQUGMxn0gDRmFvw0pBinHCDzUKH7OUdDe-Kq7EWegWu3jCF4t0vn8X0cEV"
+  },
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2024-09-26",
+  "compatibility_flags": ["nodejs_compat"],
+  "minify": true,
+  "assets": {
+    "binding": "ASSETS",
+    "directory": ".open-next/assets"
+  },
+  "observability": {
+    "enabled": true
+  }
+}
