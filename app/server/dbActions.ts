@@ -28,35 +28,35 @@ async function query<T extends QueryResultRow = QueryResultRow>(
   }
 }
 
+// // Function to create a new comment
+// export async function createComment(formData: FormData) {
+//   const comment = formData.get("comment") as string;
+
+//   // Validate input
+//   if (!comment || comment.trim().length === 0) {
+//     return { success: false, message: "Comment cannot be empty." };
+//   }
+//   if (comment.length > 500) {
+//     return {
+//       success: false,
+//       message: "Comment is too long (max 500 characters).",
+//     };
+//   }
+
+//   try {
+//     await query("INSERT INTO comments (comment) VALUES ($1)", [comment]);
+//     return { success: true, message: "Comment added successfully!" };
+//   } catch (err) {
+//     console.error("Failed to insert comment:", err);
+//     return { success: false, message: "Failed to insert comment." };
+//   }
+// }
+
 // Type definition for patterns
 type PatternData = {
   patternName: string;
   patternString: number[][][];
 };
-
-// Function to create a new comment
-export async function createComment(formData: FormData) {
-  const comment = formData.get("comment") as string;
-
-  // Validate input
-  if (!comment || comment.trim().length === 0) {
-    return { success: false, message: "Comment cannot be empty." };
-  }
-  if (comment.length > 500) {
-    return {
-      success: false,
-      message: "Comment is too long (max 500 characters).",
-    };
-  }
-
-  try {
-    await query("INSERT INTO comments (comment) VALUES ($1)", [comment]);
-    return { success: true, message: "Comment added successfully!" };
-  } catch (err) {
-    console.error("Failed to insert comment:", err);
-    return { success: false, message: "Failed to insert comment." };
-  }
-}
 
 // Function to create a new pattern
 export async function createPattern(patternData: PatternData) {
@@ -83,6 +83,52 @@ export async function createPattern(patternData: PatternData) {
   } catch (err) {
     console.error("Failed to create pattern:", err);
     return { success: false, message: "Failed to create pattern." };
+  }
+}
+
+export async function approvePattern(pattern: number) {
+  try {
+    await query("UPDATE patterns SET approved = true WHERE id = ($1)", [
+      pattern,
+    ]);
+    return { success: true, message: "Pattern approved successfully!" };
+  } catch (err) {
+    console.error("Failed to approve pattern:", err);
+    return { success: false, message: "Failed to approve pattern." };
+  }
+}
+
+export async function unapprovePattern(pattern: number) {
+  try {
+    await query("UPDATE patterns SET approved = false WHERE id = ($1)", [
+      pattern,
+    ]);
+    return { success: true, message: "Pattern unapproved successfully!" };
+  } catch (err) {
+    console.error("Failed to unapprove pattern:", err);
+    return { success: false, message: "Failed to unapprove pattern." };
+  }
+}
+
+export async function deletePattern(pattern: number) {
+  try {
+    await query("DELETE FROM patterns WHERE id = ($1)", [pattern]);
+    return { success: true, message: "Pattern deleted successfully!" };
+  } catch (err) {
+    console.error("Failed to delete pattern:", err);
+    return { success: false, message: "Failed to delete pattern." };
+  }
+}
+
+export async function getSimulated(pattern: number) {
+  try {
+    const result = await query("SELECT id FROM sims WHERE pattern = ($1)", [
+      pattern,
+    ]);
+    return { success: true, result };
+  } catch (err) {
+    console.error("Error validating pattern:", err);
+    return { success: false, result: "Error validating pattern." };
   }
 }
 
